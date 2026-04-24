@@ -115,6 +115,15 @@ describe 'Kernel#caller' do
         tap { loc = caller(1, 1)[0] }
         loc.should =~ /\A#{__FILE__}:.*in 'Kernel#tap'\z/
       end
+
+      it "does not include 'new' when called from #initialize" do
+        path = fixture(__FILE__, "caller.rb")
+
+        KernelSpecs.caller_from_initialize.should == [
+          ["#{path}:26:in 'call'", "#{path}:32:in 'block in caller_from_initialize'"],
+          ["#{path}:26:in 'call'", "#{path}:32:in 'block in caller_from_initialize'"]
+        ]
+      end
     end
   end
 end

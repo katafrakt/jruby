@@ -105,6 +105,13 @@ describe 'Kernel#caller_locations' do
         loc.label.should == "Kernel#tap"
         loc.path.should == __FILE__
       end
+
+      it "does not include 'new' when called from #initialize" do
+        KernelSpecs.caller_locations_from_initialize.should == [
+          ["call", "block in caller_locations_from_initialize"],
+          ["call", "block in caller_locations_from_initialize"]
+        ]
+      end
     end
   end
 end
